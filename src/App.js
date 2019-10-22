@@ -65,7 +65,7 @@ class App extends React.Component{
 
     const newUsers = [...this.state.users, newUser]
     this.setState({users: newUsers})
-    console.log(this.state.users)
+    
   }
   render(){
   
