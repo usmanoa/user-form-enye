@@ -10,10 +10,42 @@ const columns = [
   {title: 'Age', dataIndex: 'age', key: 'age'},
   {title: 'Hobby', dataIndex: 'hobby', key: 'hobby'}
 ]
+let id = 0;
 
-let userId = 0;
+export default class App extends React.Component{
+  constructor(props){
+    super(props);
 
-class App extends React.Component{
+    this.state={
+      users: []
+    }
+  }
+
+  addUser =(newUser)=>{
+    const newUserWithKey = {...newUser, key: id++}
+    const newUsers = [
+      ...this.state.users,
+      newUserWithKey
+    ]
+    this.setState({users: newUsers})
+  }
+
+  render(){
+  
+    return (
+      <div>
+        <UserForm addNewUser={this.addUser} />
+        <h3 style={{textAlign: "center"}} >Table of Users</h3>
+        <UserTable
+          columns={columns}
+          data={this.state.users}
+        />
+      </div>
+    );
+  }
+}
+
+class UserForm extends React.Component{
   constructor(props){
     super(props);
 
@@ -24,10 +56,7 @@ class App extends React.Component{
         birthday: "",
         age: "",
         hobby: ""
-      },
-
-      users: []
-
+      }
     }
   }
 
@@ -60,11 +89,12 @@ class App extends React.Component{
 
   submit = event =>{
     event.preventDefault();
-    const key = userId++;
-    const newUser = {...this.state.user, key}
+    const key = this.state.user.key + 1;
+    const newUser = {...this.state.user, key};
 
-    const newUsers = [...this.state.users, newUser]
-    this.setState({users: newUsers})
+    this.props.addNewUser(newUser);
+    //const newUsers = [...this.state.users, newUser]
+    //this.setState({users: newUsers})
     
   }
   render(){
@@ -147,14 +177,10 @@ class App extends React.Component{
 
           
         </form>
-        <h3 style={{textAlign: "center"}} >Table of Users</h3>
-        <UserTable data={this.state.users} columns={columns} pagination={false} />
       </div>
     );
   }
 }
-
-export default App;
 
 const UserTable = ({columns, data}) => {
   return(
