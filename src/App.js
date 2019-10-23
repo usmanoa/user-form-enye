@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './App.css';
-import 'antd/dist/antd.css';
-import {Card, Row, Col, Input,InputNumber, DatePicker, Button, Table} from 'antd';
+import AddUser from './components/AddUser';
+import UserTable from './components/UsersTable'
+
 
 const columns = [
   {title: 'First Name', dataIndex: 'first_name', key: 'first_name'},
@@ -12,178 +13,29 @@ const columns = [
 ]
 let id = 0;
 
-export default class App extends React.Component{
-  constructor(props){
-    super(props);
+const App = props => {
+  const [users, updateUsers] = useState([]);
 
-    this.state={
-      users: []
-    }
-  }
-
-  addUser =(newUser)=>{
+  const addUser = newUser => {
     const newUserWithKey = {...newUser, key: id++}
     const newUsers = [
-      ...this.state.users,
+      ...users,
       newUserWithKey
     ]
-    this.setState({users: newUsers})
+    updateUsers(newUsers)
   }
 
-  render(){
-  
-    return (
-      <div>
-        <UserForm addNewUser={this.addUser} />
-        <h3 style={{textAlign: "center"}} >Table of Users</h3>
-        <UserTable
-          columns={columns}
-          data={this.state.users}
-        />
-      </div>
-    );
-  }
+  return (
+    <div>
+      <AddUser addNewUser={addUser} />
+
+      <UserTable
+        columns={columns}
+        data={users}
+      />
+    </div>
+  );
 }
 
-class UserForm extends React.Component{
-  constructor(props){
-    super(props);
+export default App;
 
-    this.state={
-      user: {
-        first_name: "",
-        last_name: "",
-        birthday: "",
-        age: "",
-        hobby: ""
-      }
-    }
-  }
-
-  handleChange = event => {
-    const value = event.target.value;
-    const name = event.target.name;
-    const newUser = {...this.state.user, [name]: value }
-
-    this.setState({user: newUser});
-
-  }
-
-  handleAge = number => {
-    const age = number;
-    const newUser = {
-      ...this.state.user,
-      age
-    }
-    this.setState({user: newUser});
-  }
-
-  handleBirthday = date => {
-    const birthday  = date.format('L');
-    const newUser = {
-      ...this.state.user,
-      birthday
-    }
-    this.setState({user: newUser});
-  }
-
-  submit = event =>{
-    event.preventDefault();
-    const key = this.state.user.key + 1;
-    const newUser = {...this.state.user, key};
-
-    this.props.addNewUser(newUser);
-    //const newUsers = [...this.state.users, newUser]
-    //this.setState({users: newUsers})
-    
-  }
-  render(){
-  
-    return (
-      <div>
-        <form style={{paddingTop: "2rem", paddingBottom: "3rem"}} onSubmit={this.submit}>
-          <Row >
-            <Col xs={{ span: 22, offset: 1 }} lg={{ span: 12, offset: 6 }}>
-              <Card style={{backgroundColor: "#F9FDFF"}}  >
-
-                <Row type="flex" justify="space-between" className="margin-row" >
-                  <Col xs={{ span: 11}} lg={{ span: 11}}>
-                    <label>First Name</label>
-                    <Input 
-                      name="first_name"
-                      type="text"
-                      value={this.state.user.first_name}
-                      onChange={this.handleChange}
-                      required
-                    />
-                  </Col>
-                  <Col xs={{ span: 11}} lg={{ span: 11}}>
-                    <label>Last Name</label>
-                    <Input
-                      name="last_name"
-                      type="text"
-                      value={this.state.user.last_name}
-                      onChange={this.handleChange}
-                      required
-                    />
-                  </Col>
-                </Row>
-
-                <Row type="flex" justify="space-between" className="margin-row" >
-                  <Col xs={{ span: 11}} lg={{ span: 11}}>
-                    <label style={{display: "block"}}>Birthday </label>
-                    <DatePicker
-                      name="birthday"
-                      style={{width: "100%"}} 
-                      onChange={this.handleBirthday}
-                      required
-                    />
-                  </Col>
-                  <Col xs={{ span: 11}} lg={{ span: 11}}>
-                    <label style={{display: "block"}}>Age </label>
-                      <InputNumber
-                        style={{width: "100%"}} 
-                        name="age"
-                        onChange={this.handleAge}
-                        required
-                      />
-                  </Col>
-                </Row>
-
-                <Row className="margin-row" >
-                  <Col span={24}>
-                    <label>Hobby</label>
-                    <Input
-                      name="hobby"
-                      type="text"
-                      value={this.state.user.hobby}
-                      onChange={this.handleChange}
-                      required
-                    />
-                  </Col>
-                </Row>
-
-                <Row className="margin-row" >
-                  <Col span={12} offset={6}>
-                    <Button size="large" type="primary" htmlType="submit" block >Add User</Button>
-                  </Col>
-                </Row>
-
-                
-
-              </Card>
-            </Col>
-          </Row>
-
-          
-        </form>
-      </div>
-    );
-  }
-}
-
-const UserTable = ({columns, data}) => {
-  return(
-    <Table columns={columns} dataSource={data} style={{marginLeft: "2%", marginRight: "2%"}}/>
-  )
-}
