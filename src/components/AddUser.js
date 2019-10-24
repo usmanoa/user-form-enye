@@ -2,6 +2,9 @@ import React, {useState} from 'react';
 import 'antd/dist/antd.css';
 import {Card, Row, Col, Input,InputNumber, DatePicker, Button} from 'antd';
 
+import {useDispatch} from 'react-redux';
+import {addUser} from './../redux/actions/action';
+
 const style = {
   marginTopBottom: {
     marginTop: "1rem",
@@ -9,16 +12,11 @@ const style = {
 }
 }
 
-const AddUser =(props)=> {
-   const [user, updateUser] = useState({});
-        // user: {
-        //   first_name: "",
-        //   last_name: "",
-        //   birthday: "",
-        //   age: "",
-        //   hobby: ""
-        // }
-    
+function AddUser(props){
+    const dispatch = useDispatch()
+
+    const [user, updateUser] = useState({});
+        
     const handleChange = event => {
       const value = event.target.value;
       const name = event.target.name;
@@ -48,7 +46,7 @@ const AddUser =(props)=> {
   
     const submit = event =>{
       event.preventDefault();
-      props.addNewUser(user);
+      dispatch(addUser(user));
     }
     
       return (
@@ -132,6 +130,6 @@ const AddUser =(props)=> {
         </div>
       );
   
-  }
+}
 
-  export default AddUser
+export default AddUser

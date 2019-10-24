@@ -2,13 +2,18 @@ import React from 'react';
 import 'antd/dist/antd.css';
 import {Table} from 'antd';
 
-const UserTable = ({columns, data}) => {
+import {useSelector} from 'react-redux'
+import {getUsers} from './../redux/selector'
+
+const UserTable = ({columns}) => {
+    const users = useSelector(state => getUsers(state))
+
     return(
         <>
             <h3 style={{textAlign: "center"}} >Table of Users</h3>
             <Table
                 columns={columns}
-                dataSource={data}
+                dataSource={users}
                 style={{marginLeft: "2%", marginRight: "2%"}}
             />
         </>
@@ -16,6 +21,3 @@ const UserTable = ({columns, data}) => {
 }
 
 export default UserTable;
-
-
-
