@@ -1,18 +1,19 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import './App.css';
 import AddUser from './components/AddUser';
 import UserTable from './components/UsersTable'
 
-
 const columns = [
-  {title: 'First Name', dataIndex: 'first_name', key: 'first_name'},
-  {title: 'Last Name', dataIndex: 'last_name', key: 'last_name'},
+  {title: 'User Id', dataIndex: 'userId', key: 'userId'},
+  {title: 'First Name', dataIndex: 'firstName', key: 'firstName'},
+  {title: 'Last Name', dataIndex: 'lastName', key: 'lastName'},
   {title: 'Birthday', dataIndex: 'birthday', key: 'birthday'},
   {title: 'Age', dataIndex: 'age', key: 'age'},
   {title: 'Hobby', dataIndex: 'hobby', key: 'hobby'}
 ]
 
 const App = props => {
+ 
   return (
     <div>
       <AddUser />

@@ -2,8 +2,7 @@ import React, {useState} from 'react';
 import 'antd/dist/antd.css';
 import {Card, Row, Col, Input,InputNumber, DatePicker, Button} from 'antd';
 
-import {useDispatch} from 'react-redux';
-import {addUser} from './../redux/actions/action';
+import {postUser} from './../apiCalls/apiCalls'
 
 const style = {
   marginTopBottom: {
@@ -13,8 +12,7 @@ const style = {
 }
 
 function AddUser(props){
-    const dispatch = useDispatch()
-
+  
     const [user, updateUser] = useState({});
         
     const handleChange = event => {
@@ -46,7 +44,12 @@ function AddUser(props){
   
     const submit = event =>{
       event.preventDefault();
-      dispatch(addUser(user));
+      const userDetails = {
+        ...user,
+        userId: '',
+      }
+      console.log(userDetails)
+      postUser(userDetails)
     }
     
       return (
@@ -60,9 +63,9 @@ function AddUser(props){
                     <Col xs={{ span: 11}} lg={{ span: 11}}>
                       <label>First Name</label>
                       <Input 
-                        name="first_name"
+                        name="firstName"
                         type="text"
-                        value={user.first_name}
+                        value={user.firstName}
                         onChange={handleChange}
                         required
                       />
@@ -70,9 +73,9 @@ function AddUser(props){
                     <Col xs={{ span: 11}} lg={{ span: 11}}>
                       <label>Last Name</label>
                       <Input
-                        name="last_name"
+                        name="lastName"
                         type="text"
-                        value={user.last_name}
+                        value={user.lastName}
                         onChange={handleChange}
                         required
                       />

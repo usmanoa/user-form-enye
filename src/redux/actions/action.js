@@ -1,8 +1,10 @@
-import {ADD_USER} from './actionTypes'
+import {FETCH_USERS, UPDATE_USERS} from './actionTypes'
 
-let id = 0;
-
-
-export function addUser(user){
-    return {type: ADD_USER, user:{ ...user, key: ++id}}
+export function fetchUsers(){
+    return {type: FETCH_USERS}
 }
+
+export function updateUsers(users){
+    return {type: UPDATE_USERS, users}
+}
+
