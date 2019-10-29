@@ -1,9 +1,12 @@
-import { put, takeEvery, take, fork} from 'redux-saga/effects'
+import { put, takeEvery, take, fork, call} from 'redux-saga/effects'
 import {eventChannel} from 'redux-saga'
-import {fetchUsers} from '../../apiCalls/apiCalls'
+import {postUser} from '../../apiCalls/apiCalls'
 import {updateUsers} from '../actions/action'
-import { FETCH_USERS } from '../actions/actionTypes'
 import {database} from './../../firebase/firebase'
+
+function* addUser({user}){
+  yield call(()=> postUser(user))
+}
 
 /**
  * Transforms fetched data from database
@@ -42,4 +45,5 @@ function* startListener() {
 
 export default function* rootSaga() {
   yield fork(startListener)
+  yield takeEvery('ADD_USER', addUser)
 }

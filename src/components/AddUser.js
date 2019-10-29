@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import {useDispatch} from 'react-redux'
 import 'antd/dist/antd.css';
 import {Card, Row, Col, Input,InputNumber, DatePicker, Button} from 'antd';
 
@@ -12,7 +13,8 @@ const style = {
 }
 
 function AddUser(props){
-  
+
+  const dispatch = useDispatch();
     const [user, updateUser] = useState({});
         
     const handleChange = event => {
@@ -49,7 +51,7 @@ function AddUser(props){
         userId: '',
       }
       console.log(userDetails)
-      postUser(userDetails)
+      dispatch({type: 'ADD_USER', user: userDetails})
     }
     
       return (
